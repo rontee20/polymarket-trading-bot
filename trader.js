@@ -1,15 +1,10 @@
-const { ethers } = require("ethers")
-const { PRIVATE_KEY, TRADE_SIZE } = require("./config")
+async function executeTrade(market){
 
-const wallet = new ethers.Wallet(PRIVATE_KEY)
+ console.log("TRADE SIGNAL")
 
-async function trade(opportunity, side){
+ console.log(market.question)
 
- console.log("Executing trade")
- console.log(opportunity.question)
-
- console.log(`Buy ${side} size $${TRADE_SIZE}`)
+ console.log("Buying YES")
 
 }
-
-module.exports = trade
+module.exports = executeTrade
