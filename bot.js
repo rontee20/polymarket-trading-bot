@@ -1,20 +1,27 @@
-const scanMarkets = require("./scanner")
-const chooseTrade = require("./strategy")
-const trade = require("./trader")
+const getNews = require("./newsScraper")
+const scanX = require("./twitterScraper")
+const detectSignal = require("./aiClassifier")
+const findMarket = require("./marketScanner")
+const executeTrade = require("./trader")
 
 async function run(){
 
- console.log("Scanning markets...")
+ const news = await getNews()
+ const tweets = await scanX()
 
- const opportunities = await scanMarkets()
+ const content = [...news, ...tweets]
 
- for(const opp of opportunities){
+ for(const text of content){
 
-   const side = chooseTrade(opp)
+   if(detectSignal(text)){
 
-   if(side){
+     const market = await findMarket(text)
 
-     await trade(opp, side)
+     if(market){
+
+       await executeTrade(market)
+
+     }
 
    }
 
@@ -22,4 +29,4 @@ async function run(){
 
 }
 
-setInterval(run, 15000)
+setInterval(run, 20000)
